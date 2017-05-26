@@ -7,7 +7,6 @@ using Newtonsoft.Json;
 
 const string NmapLineDeliminator = "nmap scan report for";
 
-Console.WriteLine($"Looking up hosts for {Env.ScriptArgs[0]}");
 var json = JsonConvert.SerializeObject(GetNetworkHosts(Env.ScriptArgs[0]));
 
 Console.WriteLine(json);
