@@ -1,5 +1,4 @@
 #r "System.Diagnostics"
-#r "System.Net"
 #r "Newtonsoft.Json"
 
 using System.Diagnostics;
