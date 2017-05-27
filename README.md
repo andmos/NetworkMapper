@@ -2,6 +2,13 @@ NetworkMapper
 === 
 
 NetworkMapper, some ugly code wrapping `nmap -sP` to JSON. 
+Requires `nmap`: 
+
+```
+brew install nmap
+apt-get intall nmap
+choco install nmap
+```
 
 ```
 scriptcs NetworkMapper.csx -- [ipRange]
