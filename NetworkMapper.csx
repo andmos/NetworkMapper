@@ -19,10 +19,9 @@ private IEnumerable<NetworkHost> GetNetworkHosts(string ipRange)
     {
         if(line.StartsWith(NmapLineDeliminator))
         {
-            var ipLine = line.Split(new string[] {NmapLineDeliminator}, StringSplitOptions.None); 
+            var ipLine = line.Split(new string[] {NmapLineDeliminator}, StringSplitOptions.None).Select(l => l.Trim()).ToArray(); 
             
             networkHosts.Add(new NetworkHost { HostName = ipLine[1], IpAddress = ipLine[1], Alive = true });
-            
         }
     }
     return networkHosts; 
