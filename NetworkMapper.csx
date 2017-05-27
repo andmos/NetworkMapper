@@ -1,4 +1,4 @@
-#r "System.Diagnostics"
+#r "System.Diagnostics.Process"
 #r "Newtonsoft.Json"
 
 using System.Diagnostics;
