@@ -13,12 +13,12 @@ Example:
 $ scriptcs NetworkMapper.csx -- 192.168.1.* | jq
 [
   {
-    "HostName": "192.168.1.1",
+    "HostName": "Pegasus.testdomain.local",
     "IpAddress": "192.168.1.1",
     "Alive": true
   },
   {
-    "HostName": "192.168.1.100",
+    "HostName": "Atlantis.testdomain.local",
     "IpAddress": "192.168.1.100",
     "Alive": true
   },

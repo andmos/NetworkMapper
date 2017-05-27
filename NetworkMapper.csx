@@ -6,9 +6,9 @@ using Newtonsoft.Json;
 
 const string NmapLineDeliminator = "nmap scan report for";
 
-var json = JsonConvert.SerializeObject(GetNetworkHosts(Env.ScriptArgs[0]));
+var networkHostsJsonResponse = JsonConvert.SerializeObject(GetNetworkHosts(Env.ScriptArgs[0]));
 
-Console.WriteLine(json);
+Console.WriteLine(networkHostsJsonResponse);
 
 private IEnumerable<NetworkHost> GetNetworkHosts(string ipRange)
 {
@@ -20,8 +20,15 @@ private IEnumerable<NetworkHost> GetNetworkHosts(string ipRange)
         if(line.StartsWith(NmapLineDeliminator))
         {
             var ipLine = line.Split(new string[] {NmapLineDeliminator}, StringSplitOptions.None).Select(l => l.Trim()).ToArray(); 
-            
-            networkHosts.Add(new NetworkHost { HostName = ipLine[1], IpAddress = ipLine[1], Alive = true });
+            if(ipLine[1].Contains('('))
+            {
+                var ipAndHostname = ipLine[1].Split('(', ')').Select(l => l.Trim()).ToArray();
+                networkHosts.Add(new NetworkHost { HostName = ipAndHostname[0], IpAddress = ipAndHostname[1], Alive = true });
+
+            }else
+            {
+                networkHosts.Add(new NetworkHost { HostName = ipLine[1], IpAddress = ipLine[1], Alive = true });
+            }
         }
     }
     return networkHosts; 
