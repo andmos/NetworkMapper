@@ -1,8 +1,8 @@
 NetworkMapper
-=== 
+===
 
-NetworkMapper, some ugly code wrapping `nmap -sP` to JSON. 
-Requires `nmap`: 
+NetworkMapper, some ugly code wrapping `nmap -sP` to JSON.
+Requires `nmap`:
 
 ```
 brew install nmap
@@ -14,7 +14,7 @@ choco install nmap
 scriptcs NetworkMapper.csx -- [ipRange]
 ```
 
-Example: 
+Example:
 
 ```
 $ scriptcs NetworkMapper.csx -- 192.168.1.* | jq
@@ -35,4 +35,17 @@ $ scriptcs NetworkMapper.csx -- 192.168.1.* | jq
     "Alive": true
   }
 ]
+```
+
+```
+scriptcs NetworkMapper.csx -- [ipRange] count
+```
+
+Example:
+
+```
+$ scriptcs NetworkMapper.csx -- 192.168.1.* count | jq
+{
+  "hosts:": 3
+}
 ```

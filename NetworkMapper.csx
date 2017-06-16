@@ -8,18 +8,25 @@ const string NmapLineDeliminator = "nmap scan report for";
 
 var networkHostsJsonResponse = JsonConvert.SerializeObject(GetNetworkHosts(Env.ScriptArgs[0]));
 
-Console.WriteLine(networkHostsJsonResponse);
+if (Env.ScriptArgs.Count() > 1 && Env.ScriptArgs.Contains("count"))
+{
+  Console.WriteLine(JsonConvert.SerializeObject(CountNumberOfLiveHosts(GetNetworkHosts(Env.ScriptArgs[0]))));
+}else
+{
+    Console.WriteLine(networkHostsJsonResponse);
+}
 
 private IEnumerable<NetworkHost> GetNetworkHosts(string ipRange)
 {
-    var networkHosts = new List<NetworkHost>(); 
+    var networkHosts = new List<NetworkHost>();
     var rawString = RunNmap(ipRange).ToLower();
-    var nmapLines = rawString.Split('\n'); 
+    var nmapLines = rawString.Split('\n');
+
     foreach(var line in nmapLines)
     {
         if(line.StartsWith(NmapLineDeliminator))
         {
-            var ipLine = line.Split(new string[] {NmapLineDeliminator}, StringSplitOptions.None).Select(l => l.Trim()).ToArray(); 
+            var ipLine = line.Split(new string[] {NmapLineDeliminator}, StringSplitOptions.None).Select(l => l.Trim()).ToArray();
             if(ipLine[1].Contains('('))
             {
                 var ipAndHostname = ipLine[1].Split('(', ')').Select(l => l.Trim()).ToArray();
@@ -31,7 +38,12 @@ private IEnumerable<NetworkHost> GetNetworkHosts(string ipRange)
             }
         }
     }
-    return networkHosts; 
+    return networkHosts;
+}
+
+private Dictionary<string, int> CountNumberOfLiveHosts(IEnumerable<NetworkHost> networkHosts)
+{
+    return new Dictionary<string, int>() { { "hosts:", networkHosts.Count() } };
 }
 
 private string RunNmap(string ipRange)
@@ -41,7 +53,7 @@ private string RunNmap(string ipRange)
     string nmapOutput = nmapProcess.StandardOutput.ReadToEnd();
     nmapProcess.WaitForExit();
 
-    return nmapOutput; 
+    return nmapOutput;
 }
 
 private Process SetUpProcess(string command, string argument)
@@ -53,7 +65,7 @@ private Process SetUpProcess(string command, string argument)
     proc.StartInfo.UseShellExecute = false;
     proc.StartInfo.RedirectStandardOutput = true;
     proc.StartInfo.RedirectStandardError = true;
-    return proc; 
+    return proc;
 }
 
 private class NetworkHost
